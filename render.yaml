@@ -1,0 +1,22 @@
+# Blueprint de Render.com para desplegar SearXNG como Web Service Python
+services:
+  - type: web
+    name: searxng-api
+    runtime: python
+    plan: free
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt -r requirements-server.txt
+    startCommand: >-
+      PYTHONPATH=. granian --interface wsgi --host 0.0.0.0 --port $PORT
+      --no-ws --workers 1 --blocking-threads 4
+      --workers-kill-timeout 30s --blocking-threads-idle-timeout 5m
+      searx.webapp:app
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.14.10
+      - key: SEARXNG_SETTINGS_PATH
+        value: ./settings-render.yml
+      - key: SEARXNG_SECRET
+        generateValue: true
+      - key: SEARXNG_CONTACT_URL
+        value: coolbot@example.org

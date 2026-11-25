@@ -1,0 +1,39 @@
+# Configuracion de SearXNG para despliegue en Render.com
+use_default_settings: true
+
+general:
+  debug: false
+  instance_name: "SearXNG API"
+
+search:
+  safe_search: 0
+  autocomplete: "duckduckgo"
+  favicon_resolver: ""
+  formats:
+    - html
+    - json
+
+server:
+  limiter: false
+  image_proxy: true
+  default_http_headers:
+    # Permite llamadas fetch() desde tu pagina web.
+    # En produccion puedes reemplazar "*" por el dominio exacto de tu frontend (ej: "https://tu-pagina.com").
+    Access-Control-Allow-Origin: "*"
+    Access-Control-Allow-Methods: "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers: "Content-Type"
+
+outgoing:
+  request_timeout: 5.0
+
+engines:
+  - name: bing
+    disabled: false
+  - name: yahoo
+    disabled: false
+  # Desactivados por defecto en esta config API para evitar CAPTCHAs/timeouts en consultas site:
+  # Puedes volver a habilitarlos poniendo disabled: false si los necesitas.
+  - name: duckduckgo
+    disabled: true
+  - name: wikidata
+    disabled: true
